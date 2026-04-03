@@ -1,0 +1,5 @@
+{
+  "name": "BotScript IDE",
+  "description": "A custom compiler and playground for a robot control DSL, featuring a lexer, parser, and 2D visualizer.",
+  "requestFramePermissions": []
+}
