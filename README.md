@@ -81,4 +81,4 @@ Ce projet sert d'implémentation pratique de :
 - **Machines Virtuelles** : Simuler un état de type matériel (le robot) via un logiciel.
 
 ---
-*Développé par les étudiants GLSI - ISI // 2024-2025*
+*Développé par les étudiants ISEOC - ISI // 2025-2026*
