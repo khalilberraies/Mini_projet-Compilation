@@ -430,6 +430,7 @@ export class Interpreter {
   }
 
   private visit(node: ASTNode): any {
+    if (!node) return null;
     switch (node.type) {
       case 'Program':
         for (const stmt of node.body) this.visit(stmt);

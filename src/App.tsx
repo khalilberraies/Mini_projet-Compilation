@@ -85,7 +85,7 @@ export default function App() {
         return;
       }
 
-      const interpreter = new Interpreter(ast);
+      const interpreter = new Interpreter(parsedAst);
       const { state, errors: semErrors } = interpreter.execute();
       
       if (semErrors.length > 0) {
