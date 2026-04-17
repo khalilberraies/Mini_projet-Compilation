@@ -1,5 +1,20 @@
 /**
- * BotScript Compiler - Refactored to align with Flex/Bison patterns (TP1/TP2)
+ * BotScript Compiler — SOURCE DE VÉRITÉ UNIQUE
+ *
+ * Ce fichier est le compilateur/interpréteur officiel utilisé par l'IDE web BotScript.
+ * Il implémente en TypeScript les trois phases classiques d'un compilateur :
+ *
+ *   1. Analyse Lexicale  → classe Lexer  (méthode yylex)
+ *   2. Analyse Syntaxique → classe Parser (méthode yyparse)
+ *   3. Interprétation     → classe Interpreter (méthode execute)
+ *
+ * Les noms (yylex, yyparse, yytext, yylineno, …) sont intentionnellement calqués
+ * sur les conventions Flex/Bison pour faciliter la correspondance avec les TP.
+ *
+ * ⚠️  Les fichiers src/specs/ (botscript.l, botscript.y, *.tab.c, lex.yy.c) sont
+ *     des spécifications de référence documentaire. Ils NE SONT PAS importés ici
+ *     et n'affectent en aucun cas le comportement de l'application web.
+ *     Voir src/specs/README.md pour plus d'informations.
  */
 
 // --- GLOBAL STATE (Mimicking Flex/Bison globals) ---

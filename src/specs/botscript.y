@@ -39,6 +39,7 @@ statement:
     var_decl
     | assignment
     | repeat_loop
+    | while_stmt
     | if_stmt
     | command
     ;
@@ -53,6 +54,10 @@ assignment:
 
 repeat_loop:
     REPEAT expression '{' statements '}' { printf("Boucle repeat\n"); }
+    ;
+
+while_stmt:
+    WHILE '(' expression ')' '{' statements '}' { printf("Boucle while\n"); }
     ;
 
 if_stmt:

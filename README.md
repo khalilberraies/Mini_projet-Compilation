@@ -6,6 +6,16 @@ L'objectif du projet est de démontrer l'application pratique des principes de c
 
 ---
 
+## ⚡ Source de Vérité Unique : Implémentation TypeScript
+
+> **L'implémentation autoritaire de ce projet est entièrement écrite en TypeScript.**
+>
+> Le fichier `src/compiler.ts` contient le **lexeur**, le **parseur** et l'**interpréteur** utilisés par l'IDE web. C'est le seul compilateur qui s'exécute réellement.
+>
+> Les fichiers dans `src/specs/` (`botscript.l`, `botscript.y`, `*.tab.c`, `lex.yy.c`) sont des **spécifications de référence / documentation illustrative** alignées sur les grammaires Flex/Bison vues en TP. Ils ne sont **pas compilés, pas exécutés** et ne font **pas partie du build Node/Vite**. Consultez [`src/specs/README.md`](src/specs/README.md) pour plus de détails.
+
+---
+
 ## 🚀 Démarrage Rapide
 
 1. **Installez Node.js** (v18 ou supérieure).
@@ -20,31 +30,65 @@ L'objectif du projet est de démontrer l'application pratique des principes de c
    ```
 5. Ouvrez votre navigateur à l'URL affichée dans le terminal (généralement `http://localhost:3000`).
 
+> ℹ️ Aucune étape de compilation C n'est nécessaire. Il n'y a aucun appel à `flex`, `bison` ou `gcc` dans les scripts du projet.
+
+---
+
+## 📁 Structure du Projet
+
+```
+Mini_projet-Compilation/
+├── src/
+│   ├── compiler.ts        ← ✅ SOURCE DE VÉRITÉ : Lexeur + Parseur + Interpréteur (TypeScript)
+│   ├── App.tsx            ← Interface React (utilise uniquement compiler.ts)
+│   ├── main.tsx           ← Point d'entrée React/Vite
+│   ├── index.css          ← Styles globaux
+│   └── specs/             ← 📚 RÉFÉRENCE SEULEMENT (ne pas compiler/exécuter)
+│       ├── README.md          ← Explications des fichiers de spécification
+│       ├── botscript.l        ← Grammaire Flex (référence documentaire)
+│       ├── botscript.y        ← Grammaire Bison (référence documentaire)
+│       ├── botscript.tab.h    ← En-tête généré par Bison (illustratif)
+│       ├── botscript.tab.c    ← Code C généré par Bison (illustratif)
+│       └── lex.yy.c           ← Code C généré par Flex (illustratif)
+├── index.html
+├── package.json           ← Scripts npm : dev, build, preview, lint (aucun appel C)
+├── vite.config.ts
+└── tsconfig.json
+```
+
 ---
 
 ## 🛠️ Fonctionnement : Cohérence avec les TP (Flex & Bison)
 
-Ce projet a été restructuré pour être en parfaite cohérence avec les travaux pratiques **TP1 (Analyse Lexicale)** et **TP2 (Analyse Syntaxique)** :
+Ce projet a été structuré pour être en cohérence pédagogique avec les travaux pratiques **TP1 (Analyse Lexicale)** et **TP2 (Analyse Syntaxique)**. L'implémentation TypeScript reproduit fidèlement les concepts Flex/Bison :
 
-### 1. Analyse Lexicale (Inspirée de Flex)
-Le fichier `src/compiler.ts` implémente une fonction `yylex()` qui :
+### 1. Analyse Lexicale (Inspirée de Flex) — `src/compiler.ts` classe `Lexer`
+Le fichier `src/compiler.ts` implémente une méthode `yylex()` qui :
 - Utilise des expressions régulières pour identifier les unités lexicales (`ENTIER`, `REEL`, `IDENT`, `MOTCLE`).
 - Gère les variables globales standards : `yytext`, `yylval`, `yylineno`.
 - Ignore les commentaires (`//` ou `#`) et les espaces, comme demandé dans le TP1.
 
-### 2. Analyse Syntaxique (Inspirée de Bison)
+### 2. Analyse Syntaxique (Inspirée de Bison) — `src/compiler.ts` classe `Parser`
 La classe `Parser` implémente une méthode `yyparse()` qui :
 - Suit une grammaire formelle définie par des règles de production.
 - Gère les priorités des opérateurs (arithmétiques et relationnels).
 - Effectue des actions sémantiques pour construire l'Arbre de Syntaxe Abstraite (AST).
-- Supporte désormais les boucles `while (condition) { ... }` en plus des boucles `repeat`.
+- Supporte les boucles `while (condition) { ... }` et les boucles `repeat`.
 
-### 3. Fichiers de Spécifications et Fichiers Générés
-Pour votre rapport, les fichiers sources et les fichiers générés théoriques sont fournis dans le dossier `src/specs/` :
+### 3. Interprétation Sémantique — `src/compiler.ts` classe `Interpreter`
+L'interpréteur parcourt l'AST et :
+- Maintient un environnement de variables (table des symboles).
+- Exécute les commandes robot (`forward`, `turn`, `color`, `penDown`, `penUp`).
+- Détecte les erreurs sémantiques (variable non déclarée, etc.).
+
+### 4. Fichiers de Spécifications (Référence Documentaire)
+Pour votre rapport, les équivalents Flex/Bison sont fournis dans `src/specs/` à titre illustratif :
 - `botscript.l` : Spécifications Flex (définitions régulières et règles de traduction).
-- `botscript.y` : Spécifications Bison (grammaire, union yylval et actions).
-- `botscript.tab.h` & `botscript.tab.c` : Fichiers d'en-tête et de code générés par Bison.
-- `lex.yy.c` : Code C généré par Flex pour l'analyseur lexical.
+- `botscript.y` : Spécifications Bison (grammaire complète incluant `while`, union `yylval` et actions).
+- `botscript.tab.h` & `botscript.tab.c` : Fichiers d'en-tête et de code illustratifs (style Bison).
+- `lex.yy.c` : Code C illustratif (style Flex).
+
+Voir [`src/specs/README.md`](src/specs/README.md) pour les instructions si vous souhaitez compiler les fichiers C séparément à des fins académiques.
 
 ---
 
