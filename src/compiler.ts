@@ -1,6 +1,4 @@
-/**
- * BotScript Compiler - Refactored to align with Flex/Bison patterns (TP1/TP2)
- */
+// BotScript Compiler 
 
 // --- GLOBAL STATE (Mimicking Flex/Bison globals) ---
 export let yytext: string = "";
@@ -51,7 +49,7 @@ export class Lexer {
     while (this.pos < this.input.length) {
       const char = this.input[this.pos];
 
-      // Ignorer les espaces, tabulations, passages à la ligne (TP1 Ex 5a)
+      // Ignorer les espaces, tabulations, passages à la ligne
       if (/\s/.test(char)) {
         if (char === '\n') {
           yylineno++;

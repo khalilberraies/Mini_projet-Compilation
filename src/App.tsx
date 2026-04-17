@@ -471,7 +471,7 @@ expression: ENTIER | REEL | IDENT | expression '+' expression | ... ;`}
           <a href="#" className="text-slate-500 hover:text-white transition-colors"><Settings className="w-5 h-5" /></a>
         </div>
         <p className="text-slate-500 text-xs font-mono">
-          &copy; 2024-2025 // GLSI - ISI // Mini-Projet Techniques de Compilation
+          &copy; 2025-2026 // 1 ISEOC - ISI // Mini-Projet Techniques de Compilation
         </p>
       </footer>
     </div>
