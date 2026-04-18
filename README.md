@@ -150,28 +150,104 @@ The WebAssembly compiler is generated from the specs in `src/specs/`:
 
 The build script is `scripts/build-wasm.sh` and outputs to `public/wasm/`.
 
-### Option 1 (recommended) — Linux / WSL (easiest for Flex/Bison)
-1. Install Flex + Bison (example for Debian/Ubuntu):
-   ```bash
-   sudo apt update
-   sudo apt install -y flex bison
-   ```
-2. Install and activate Emscripten SDK (emsdk) and ensure `emcc` is in your `PATH`.
-3. Build the compiler + start the IDE:
-   ```bash
-   npm run dev:wasm
-   ```
+### Install prerequisites: Flex, Bison, and `emcc`
 
-### Option 2 — Windows native (possible, but more tooling)
 You need:
-- A Bash environment to run `scripts/build-wasm.sh` (Git Bash works; WSL works)
-- Flex/Bison for Windows (commonly provided by **WinFlexBison**, exposing `win_flex` and `win_bison`)
-- Emscripten SDK (emsdk) with `emcc` available
+- **Flex** (lexer generator)
+- **Bison** (parser generator)
+- **Emscripten** (provides `emcc`, compiles C to WebAssembly)
 
-Then:
+#### Linux / WSL (recommended)
+
+Install Flex + Bison:
+- Debian/Ubuntu:
+  ```bash
+  sudo apt update
+  sudo apt install -y flex bison
+  ```
+- Fedora:
+  ```bash
+  sudo dnf install -y flex bison
+  ```
+- Arch:
+  ```bash
+  sudo pacman -S --noconfirm flex bison
+  ```
+
+Install Emscripten (emsdk) to get `emcc`:
+```bash
+git clone https://github.com/emscripten-core/emsdk.git
+cd emsdk
+./emsdk install latest
+./emsdk activate latest
+source ./emsdk_env.sh
+```
+
+Verify:
+```bash
+flex --version
+bison --version
+emcc -v
+```
+
+> Tip: `scripts/build-wasm.sh` also looks for emsdk in `~/emsdk` by default.
+
+#### Windows native (works, but more moving parts)
+
+You need a Bash environment to run `scripts/build-wasm.sh`:
+- **WSL** (recommended), or
+- **Git Bash**, or
+- **MSYS2**
+
+Flex/Bison options:
+- If you use **MSYS2**, you can install them inside the MSYS2 shell:
+  ```bash
+  pacman -S --noconfirm flex bison
+  ```
+- If you use **WinFlexBison**, make sure `win_flex.exe` and `win_bison.exe` are on `PATH`.
+  The build script auto-detects `bison`/`win_bison` and `flex`/`win_flex`.
+
+Install Emscripten (emsdk) to get `emcc` (Git Bash / PowerShell):
+```bash
+git clone https://github.com/emscripten-core/emsdk.git
+cd emsdk
+./emsdk install latest
+./emsdk activate latest
+```
+
+Then, in the same shell session, load the environment (path depends on your shell):
+- Git Bash:
+  ```bash
+  source ./emsdk_env.sh
+  ```
+- PowerShell:
+  ```powershell
+  .\emsdk_env.ps1
+  ```
+
+Verify:
+```bash
+emcc -v
+```
+
+### Build + run (after installing prerequisites)
+
+Build the WebAssembly compiler:
+```bash
+npm run compiler:wasm
+```
+
+Start the IDE:
+```bash
+npm run dev
+```
+
+Or do both in one command:
 ```bash
 npm run dev:wasm
 ```
+
+> On Windows, run these commands in WSL, MSYS2, or Git Bash if you want to rebuild the WASM compiler.
 
 ## 6) Project structure (high level)
 
