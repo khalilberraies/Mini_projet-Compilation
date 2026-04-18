@@ -431,6 +431,32 @@ export class Interpreter {
 
   constructor(private ast: ASTNode) {}
 
+  // --- Semantic validation helpers ---
+  private ensureNumber(value: any, ctx: string) {
+    if (typeof value !== 'number' || Number.isNaN(value)) {
+      throw new Error(`Type invalide: ${ctx} doit être un nombre`);
+    }
+  }
+
+  private ensureString(value: any, ctx: string) {
+    if (typeof value !== 'string') {
+      throw new Error(`Type invalide: ${ctx} doit être une chaîne`);
+    }
+  }
+
+  private ensureInteger(value: any, ctx: string) {
+    this.ensureNumber(value, ctx);
+    if (!Number.isInteger(value)) {
+      throw new Error(`Type invalide: ${ctx} doit être un entier`);
+    }
+  }
+
+  private ensureArgsCount(name: string, args: any[], expected: number) {
+    if (args.length !== expected) {
+      throw new Error(`Nombre d'arguments invalide pour ${name} (attendu ${expected})`);
+    }
+  }
+
   public execute(): { state: RobotState; errors: CompilerError[] } {
     try {
       this.visit(this.ast);
@@ -451,54 +477,96 @@ export class Interpreter {
       case 'Program':
         for (const stmt of node.body) this.visit(stmt);
         break;
+
       case 'VarDecl':
         this.variables.set(node.name, this.visit(node.value));
         break;
+
       case 'Assignment':
         if (!this.variables.has(node.name)) {
           throw new Error(`Variable non définie: ${node.name}`);
         }
         this.variables.set(node.name, this.visit(node.value));
         break;
-      case 'Repeat':
+
+      case 'Repeat': {
         const count = this.visit(node.count);
+        this.ensureInteger(count, "repeat");
+        if (count < 0) {
+          throw new Error(`repeat attend un entier >= 0`);
+        }
         for (let i = 0; i < count; i++) {
           for (const stmt of node.body) this.visit(stmt);
         }
         break;
-      case 'If':
-        if (this.visit(node.condition)) {
+      }
+
+      case 'If': {
+        const cond = this.visit(node.condition);
+        this.ensureNumber(cond, "condition de if");
+        if (cond) {
           for (const stmt of node.thenBody) this.visit(stmt);
         } else if (node.elseBody) {
           for (const stmt of node.elseBody) this.visit(stmt);
         }
         break;
-      case 'While':
-        while (this.visit(node.condition)) {
+      }
+
+      case 'While': {
+        while (true) {
+          const c = this.visit(node.condition);
+          this.ensureNumber(c, "condition de while");
+          if (!c) break;
           for (const stmt of node.body) this.visit(stmt);
         }
         break;
+      }
+
       case 'Command':
         this.executeCommand(node.name, node.args.map(a => this.visit(a)));
         break;
-      case 'BinaryExpr':
+
+      case 'BinaryExpr': {
         const left = this.visit(node.left);
         const right = this.visit(node.right);
+
         switch (node.operator) {
-          case '+': return left + right;
-          case '-': return left - right;
-          case '*': return left * right;
-          case '/': return left / right;
+          case '+':
+          case '-':
+          case '*':
+          case '/': {
+            this.ensureNumber(left, "opérande gauche");
+            this.ensureNumber(right, "opérande droite");
+            if (node.operator === '/' && right === 0) {
+              throw new Error(`Division par zéro`);
+            }
+            if (node.operator === '+') return left + right;
+            if (node.operator === '-') return left - right;
+            if (node.operator === '*') return left * right;
+            return left / right;
+          }
+
           case '==': return left == right;
           case '!=': return left != right;
-          case '<': return left < right;
-          case '>': return left > right;
-          case '<=': return left <= right;
-          case '>=': return left >= right;
+
+          case '<':
+          case '>':
+          case '<=':
+          case '>=': {
+            this.ensureNumber(left, "opérande gauche");
+            this.ensureNumber(right, "opérande droite");
+            if (node.operator === '<') return left < right;
+            if (node.operator === '>') return left > right;
+            if (node.operator === '<=') return left <= right;
+            return left >= right;
+          }
         }
         break;
+      }
+
       case 'Literal':
         return node.value;
+
       case 'Identifier':
         if (!this.variables.has(node.name)) {
           throw new Error(`Variable non définie: ${node.name}`);
@@ -509,7 +577,9 @@ export class Interpreter {
 
   private executeCommand(name: string, args: any[]) {
     switch (name) {
-      case 'forward':
+      case 'forward': {
+        this.ensureArgsCount('forward', args, 1);
+        this.ensureNumber(args[0], "argument de forward");
         const dist = args[0];
         const rad = (this.state.angle * Math.PI) / 180;
         this.state.x += Math.cos(rad) * dist;
@@ -521,18 +591,30 @@ export class Interpreter {
           color: this.state.color,
         });
         break;
+      }
+
       case 'turn':
+        this.ensureArgsCount('turn', args, 1);
+        this.ensureNumber(args[0], "argument de turn");
         this.state.angle += args[0];
         break;
+
       case 'color':
+        this.ensureArgsCount('color', args, 1);
+        this.ensureString(args[0], "argument de color");
         this.state.color = args[0];
         break;
+
       case 'penDown':
+        this.ensureArgsCount('penDown', args, 0);
         this.state.penDown = true;
         break;
+
       case 'penUp':
+        this.ensureArgsCount('penUp', args, 0);
         this.state.penDown = false;
         break;
+
       default:
         throw new Error(`Commande inconnue: ${name}`);
     }
