@@ -37,14 +37,11 @@ La classe `Parser` implémente une méthode `yyparse()` qui :
 - Suit une grammaire formelle définie par des règles de production.
 - Gère les priorités des opérateurs (arithmétiques et relationnels).
 - Effectue des actions sémantiques pour construire l'Arbre de Syntaxe Abstraite (AST).
-- Supporte désormais les boucles `while (condition) { ... }` en plus des boucles `repeat`.
 
-### 3. Fichiers de Spécifications et Fichiers Générés
-Pour votre rapport, les fichiers sources et les fichiers générés théoriques sont fournis dans le dossier `src/specs/` :
+### 3. Fichiers de Spécifications
+Pour votre rapport, les fichiers sources "théoriques" sont fournis dans le dossier `src/specs/` :
 - `botscript.l` : Spécifications Flex (définitions régulières et règles de traduction).
 - `botscript.y` : Spécifications Bison (grammaire, union yylval et actions).
-- `botscript.tab.h` & `botscript.tab.c` : Fichiers d'en-tête et de code générés par Bison.
-- `lex.yy.c` : Code C généré par Flex pour l'analyseur lexical.
 
 ---
 
@@ -62,21 +59,16 @@ Pour votre rapport, les fichiers sources et les fichiers générés théoriques 
 ### Logique et Flux de Contrôle
 - **Variables** : `let size = 100;` ou `size = size + 10;`
 - **Arithmétique** : Supporte `+`, `-`, `*`, `/` avec la priorité standard.
-- **Boucles** : 
-  - `repeat 4 { ... }` : Exécute le bloc un nombre fixe de fois.
-  - `while (x < 100) { ... }` : Exécute le bloc tant que la condition est vraie.
+- **Boucles** : `repeat 4 { ... }` exécute le bloc plusieurs fois.
 - **Conditionnels** : `if (x > 10) { ... } else { ... }` pour la prise de décision.
 
 ---
 
 ## 🎨 Fonctionnalités de l'Interface Utilisateur
 
-- **Éditeur style Monaco** : Un éditeur de code propre, au thème sombre, avec coloration syntaxique.
-- **Onglet Compilateur (Visualisation Flex/Bison)** : Une vue exclusive permettant de voir :
-  - **Flux de Jetons (yylex)** : La liste brute des tokens identifiés avec leurs types et valeurs.
-  - **Structure AST (yyparse)** : L'arbre de syntaxe abstraite généré sous forme JSON pour comprendre la hiérarchie du code.
+- **Éditeur style Monaco** : Un éditeur de code propre, au thème sombre, avec coloration syntaxique (via une logique personnalisée).
 - **Visualiseur Canvas 2D** : Une grille en temps réel où le chemin du robot est dessiné.
-- **Console Système** : Un outil de diagnostic qui affiche l'état de la compilation et les erreurs.
+- **Console Système** : Un outil de diagnostic qui affiche l'état de la compilation, les erreurs lexicales/syntaxiques et les journaux d'exécution.
 - **Panneau de Documentation** : Un guide intégré pour aider les utilisateurs à apprendre la syntaxe BotScript.
 
 ---
@@ -87,3 +79,6 @@ Ce projet sert d'implémentation pratique de :
 - **Récupération d'Erreurs** : Gestion et signalement des erreurs à différentes étapes de la compilation.
 - **Génération d'AST** : Transformer un texte plat en données structurées.
 - **Machines Virtuelles** : Simuler un état de type matériel (le robot) via un logiciel.
+
+---
+*Développé par les étudiants ISEOC - ISI // 2025-2026*
