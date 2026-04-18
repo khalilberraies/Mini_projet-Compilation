@@ -1,0 +1,260 @@
+============================================================
+INTERPRETER TESTS - DETAILED OUTPUT REPORT
+============================================================
+Generated at: 2026-04-18T17:21:02.233Z
+Total: 11
+Passed: 11
+Failed: 0
+============================================================
+
+#1 tokenize - all tokens in one string
+Status      : PASS
+Started     : 2026-04-18T17:21:02.210Z
+Ended       : 2026-04-18T17:21:02.214Z
+Duration(ms): 4
+Input:
+let x = 12; x = 3.5 + 2 * 7 - 1 / 2;
+if (x >= 10) { forward(5); } else { turn(90); }
+color("red"); penDown(); penUp(); #comment
+Expected:
+{
+  "has": [
+    "MOTCLE",
+    "IDENT",
+    "ENTIER",
+    "REEL",
+    "OP_ARTHM",
+    "OP_REL",
+    "AFFECT",
+    "PUNCT",
+    "CHAINE"
+  ]
+}
+Actual:
+{
+  "has": [
+    "MOTCLE",
+    "IDENT",
+    "ENTIER",
+    "REEL",
+    "OP_ARTHM",
+    "OP_REL",
+    "AFFECT",
+    "PUNCT",
+    "CHAINE"
+  ],
+  "tokenCount": 52
+}
+Notes:
+Checks presence of every token category at least once.
+------------------------------------------------------------
+
+#2 tokenize integer
+Status      : PASS
+Started     : 2026-04-18T17:21:02.216Z
+Ended       : 2026-04-18T17:21:02.217Z
+Duration(ms): 1
+Input:
+123;
+Expected:
+{
+  "type": "ENTIER",
+  "value": 123
+}
+Actual:
+{
+  "type": "ENTIER",
+  "value": 123
+}
+------------------------------------------------------------
+
+#3 tokenize string
+Status      : PASS
+Started     : 2026-04-18T17:21:02.218Z
+Ended       : 2026-04-18T17:21:02.218Z
+Duration(ms): 0
+Input:
+"hello";
+Expected:
+{
+  "type": "CHAINE",
+  "value": "hello"
+}
+Actual:
+{
+  "type": "CHAINE",
+  "value": "hello"
+}
+------------------------------------------------------------
+
+#4 parser - simple var declaration
+Status      : PASS
+Started     : 2026-04-18T17:21:02.219Z
+Ended       : 2026-04-18T17:21:02.220Z
+Duration(ms): 1
+Input:
+let x = 5;
+Expected:
+{
+  "parserErrors": 0,
+  "firstType": "VarDecl",
+  "varName": "x"
+}
+Actual:
+{
+  "parserErrors": 0,
+  "firstType": "VarDecl",
+  "varName": "x"
+}
+------------------------------------------------------------
+
+#5 parser - missing semicolon should error (negative test)
+Status      : PASS
+Started     : 2026-04-18T17:21:02.220Z
+Ended       : 2026-04-18T17:21:02.220Z
+Duration(ms): 0
+Input:
+let x = 5
+Expected:
+{
+  "parserErrorCountAtLeast": 1
+}
+Actual:
+{
+  "parserErrorCount": 1
+}
+Notes:
+Intentional wrong syntax to verify parser detects error.
+------------------------------------------------------------
+
+#6 semantic - valid program
+Status      : PASS
+Started     : 2026-04-18T17:21:02.222Z
+Ended       : 2026-04-18T17:21:02.226Z
+Duration(ms): 4
+Input:
+
+let x = 10;
+repeat 3 { forward(5); }
+
+Expected:
+{
+  "semanticErrors": 0
+}
+Actual:
+{
+  "semanticErrors": 0
+}
+------------------------------------------------------------
+
+#7 semantic - undefined variable (negative test)
+Status      : PASS
+Started     : 2026-04-18T17:21:02.227Z
+Ended       : 2026-04-18T17:21:02.227Z
+Duration(ms): 0
+Input:
+x = 5;
+Expected:
+{
+  "semanticErrorsAtLeast": 1,
+  "contains": "Variable non définie"
+}
+Actual:
+{
+  "semanticErrors": 1,
+  "firstError": "Variable non définie: x"
+}
+Notes:
+Intentional semantic error: assignment before declaration.
+------------------------------------------------------------
+
+#8 semantic - division by zero (negative test)
+Status      : PASS
+Started     : 2026-04-18T17:21:02.228Z
+Ended       : 2026-04-18T17:21:02.229Z
+Duration(ms): 1
+Input:
+let x = 1 / 0;
+Expected:
+{
+  "semanticErrorsAtLeast": 1,
+  "contains": "Division par zéro"
+}
+Actual:
+{
+  "semanticErrors": 1,
+  "firstError": "Division par zéro"
+}
+Notes:
+Intentional semantic error: division by zero.
+------------------------------------------------------------
+
+#9 complete - full pipeline success
+Status      : PASS
+Started     : 2026-04-18T17:21:02.229Z
+Ended       : 2026-04-18T17:21:02.230Z
+Duration(ms): 1
+Input:
+
+let x = 5;
+forward(x);
+turn(90);
+color("blue");
+
+Expected:
+{
+  "parserErrors": 0,
+  "semanticErrors": 0,
+  "finalColor": "blue"
+}
+Actual:
+{
+  "parserErrors": 0,
+  "semanticErrors": 0,
+  "finalColor": "blue"
+}
+------------------------------------------------------------
+
+#10 complete - full pipeline fail (parser negative test)
+Status      : PASS
+Started     : 2026-04-18T17:21:02.230Z
+Ended       : 2026-04-18T17:21:02.231Z
+Duration(ms): 1
+Input:
+let x = ;
+Expected:
+{
+  "parserErrorsAtLeast": 1
+}
+Actual:
+{
+  "parserErrors": 1
+}
+Notes:
+Intentional parser failure in full pipeline.
+------------------------------------------------------------
+
+#11 complete - full pipeline fail (semantic negative test)
+Status      : PASS
+Started     : 2026-04-18T17:21:02.232Z
+Ended       : 2026-04-18T17:21:02.232Z
+Duration(ms): 0
+Input:
+forward("oops");
+Expected:
+{
+  "semanticErrorsAtLeast": 1,
+  "containsOneOf": [
+    "doit être un nombre",
+    "Type invalide"
+  ]
+}
+Actual:
+{
+  "semanticErrors": 1,
+  "firstError": "Type invalide: argument de forward doit être un nombre"
+}
+Notes:
+Intentional semantic failure: wrong argument type.
+------------------------------------------------------------
+
