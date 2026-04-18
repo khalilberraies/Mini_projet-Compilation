@@ -33,19 +33,25 @@ void yyerror(const char *s);
 %token <chaine> IDENT CHAINE
 %token LET REPEAT IF ELSE WHILE FORWARD TURN COLOR PENDOWN PENUP
 %token EQ NE LE GE
+%token AND OR NOT
 
 /* AST non-terminals */
 %type <node> program statement var_decl assignment repeat_loop while_loop if_stmt command expression
 %type <nodelist> statements stmt_block arg_list_opt arg_list
 
+%left OR
+%left AND
+%right NOT
+
 %left '+' '-'
 %left '*' '/'
+%right UMINUS
 %nonassoc '<' '>' EQ NE LE GE
 
 %%
 
 program:
-    statements
+    stmt_block
     {
       $$ = ast_make_program($1.items, $1.len);
       wasm_set_ast_root($$);
@@ -189,6 +195,11 @@ expression:
       $$ = ast_make_identifier($1);
       free($1);
     }
+    | '-' expression %prec UMINUS
+    {
+      /* unary minus as 0 - expr */
+      $$ = ast_make_binary(ast_make_literal_number(0), "-", $2);
+    }
     | expression '+' expression
     {
       $$ = ast_make_binary($1, "+", $3);
@@ -233,6 +244,18 @@ expression:
     {
       $$ = $2;
     }
+    | expression AND expression 
+    { 
+      $$ = ast_make_binary($1, "&&", $3); 
+      }
+    | expression OR expression  
+    {
+       $$ = ast_make_binary($1, "||", $3); 
+       }
+    | NOT expression            
+    {
+       $$ = ast_make_unary("!", $2); 
+       }
     ;
 
 %%

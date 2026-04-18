@@ -47,10 +47,12 @@ penUp();
 forward(50);
 color("#ef4444");
 penDown();
-repeat 36 {
-  forward(10);
-  turn(10);
-}
+
+//draw a cercle
+// repeat 36 {
+//   forward(10);
+//   turn(10);
+// }
 `;
 
 export default function App() {

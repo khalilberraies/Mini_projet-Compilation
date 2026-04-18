@@ -158,11 +158,26 @@ AstNode** ast_list_new(AstNode* first, int* out_len){
   if(!arr){ *out_len=0; return NULL; }
   arr[0]=first; *out_len=1; return arr;
 }
+
 AstNode** ast_list_push(AstNode** list, int* len, AstNode* item){
   int n=*len+1;
   AstNode** nl=(AstNode**)realloc(list,(size_t)n*sizeof(AstNode*));
   if(!nl) return list;
   nl[n-1]=item; *len=n; return nl;
+}
+
+AstNode* ast_make_unary(const char* op, AstNode* expr) {
+  AstNode* n = (AstNode*)calloc(1, sizeof(AstNode));
+  if (!n) return NULL;
+
+  n->type = AST_UNARY_EXPR;
+  n->line = 0;
+  n->col = 0;
+
+  n->as.unary.op = strdup(op ? op : "");
+  n->as.unary.expr = expr;
+
+  return n;
 }
 
 AstNode* ast_make_program(AstNode** body, int body_len){ AstNode* n=ast_new(AST_PROGRAM); n->as.program.body=body; n->as.program.body_len=body_len; return n; }
@@ -182,6 +197,14 @@ static void ast_to_json(StrBuf* sb, AstNode* n){
   if(!n){ sb_append(sb,"null"); return; }
 
   switch(n->type){
+    case AST_UNARY_EXPR: {
+      sb_append(sb, "{\"type\":\"UnaryExpr\",\"op\":");
+      sb_json_str(sb, n->as.unary.op ? n->as.unary.op : "");
+      sb_append(sb, ",\"expr\":");
+      ast_to_json(sb, n->as.unary.expr);
+      sb_append(sb, "}");
+      break;
+    }
     case AST_PROGRAM:
       sb_append(sb,"{\"type\":\"Program\",\"body\":[");
       for(int i=0;i<n->as.program.body_len;i++){ if(i) sb_append(sb,","); ast_to_json(sb,n->as.program.body[i]); }
@@ -300,6 +323,13 @@ static double eval_expr(AstNode* n){
     return 0.0;
   }
   if(n->type==AST_IDENTIFIER){ double v=0; if(var_get(n->as.ident.name,&v)) return v; return 0.0; }
+    if(n->type==AST_UNARY_EXPR){
+    const char* op = n->as.unary.op ? n->as.unary.op : "";
+    double v = eval_expr(n->as.unary.expr);
+    if(strcmp(op,"!")==0) return !v;
+    if(strcmp(op,"-")==0) return -v;
+    return v;
+  }
   if(n->type==AST_BINARY_EXPR){
     double l=eval_expr(n->as.binary.left), r=eval_expr(n->as.binary.right);
     const char* op=n->as.binary.op?n->as.binary.op:"";

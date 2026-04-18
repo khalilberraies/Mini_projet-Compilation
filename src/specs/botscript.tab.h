@@ -77,7 +77,11 @@ extern int yydebug;
     EQ = 272,                      /* EQ  */
     NE = 273,                      /* NE  */
     LE = 274,                      /* LE  */
-    GE = 275                       /* GE  */
+    GE = 275,                      /* GE  */
+    AND = 276,                     /* AND  */
+    OR = 277,                      /* OR  */
+    NOT = 278,                     /* NOT  */
+    UMINUS = 279                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -98,7 +102,7 @@ union YYSTYPE
       int len;
     } nodelist;
 
-#line 102 "D:/MP_compilation/src/specs/botscript.tab.h"
+#line 106 "D:/MP_compilation/src/specs/botscript.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -374,8 +374,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 37
-#define YY_END_OF_BUFFER 38
+#define YY_NUM_RULES 46
+#define YY_END_OF_BUFFER 47
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -383,17 +383,20 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[85] =
+static const flex_int16_t yy_accept[108] =
     {   0,
-        0,    0,   38,   36,    1,    2,   36,   36,    4,   32,
-       33,   28,   26,   35,   27,   29,   16,   34,   23,   25,
-       24,   17,   17,   17,   17,   17,   17,   17,   17,   17,
-       17,   30,   31,    1,   20,    0,   18,    4,    3,    0,
-       16,   21,   19,   22,   17,   17,   17,   17,    7,   17,
-       17,   17,   17,   17,    3,   15,   17,   17,   17,    5,
-       17,   17,   17,   17,   17,    8,   17,   17,   17,   17,
-       11,   17,   12,   17,   17,   14,   17,    9,   17,   17,
-        6,   10,   13,    0
+        0,    0,    0,    0,   47,   45,    1,    2,   31,   45,
+        4,   45,   41,   42,   37,   35,   44,   36,   45,   38,
+       22,   43,   32,   34,   33,   23,   23,   23,   23,   23,
+       23,   23,   23,   23,   23,   39,   45,   40,    6,    8,
+        7,    1,   26,    0,   24,    0,    4,   29,   20,    5,
+        3,   20,   22,    0,   27,   25,   28,   23,   23,   23,
+       23,   12,   23,   23,   23,   23,   23,   30,    6,    7,
+        7,    9,    0,    3,   20,    0,   21,   23,   23,   23,
+       10,   23,   23,   23,   23,    0,   20,   23,   13,   23,
+       23,   23,   23,   16,   23,   17,   23,   23,   19,   23,
+
+       14,   23,   23,   11,   15,   18,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -401,17 +404,17 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    4,    5,    6,    1,    1,    1,    1,    7,
-        8,    9,   10,   11,   12,   13,   14,   15,   15,   15,
-       15,   15,   15,   15,   15,   15,   15,    1,   16,   17,
-       18,   19,    1,    1,   20,   20,   20,   21,   20,   20,
-       20,   20,   20,   20,   20,   20,   20,   20,   20,   20,
-       20,   20,   20,   20,   22,   20,   20,   20,   20,   20,
-        1,    1,    1,    1,   20,    1,   23,   20,   24,   25,
+        1,    2,    4,    5,    6,    1,    1,    7,    1,    8,
+        9,   10,   11,   12,   13,   14,   15,   16,   16,   16,
+       16,   16,   16,   16,   16,   16,   16,    1,   17,   18,
+       19,   20,    1,    1,   21,   21,   21,   22,   23,   21,
+       21,   21,   21,   21,   21,   21,   21,   21,   21,   21,
+       21,   21,   21,   21,   24,   21,   21,   21,   21,   21,
+        1,   25,    1,    1,   21,    1,   26,   21,   27,   28,
 
-       26,   27,   20,   28,   29,   20,   20,   30,   20,   31,
-       32,   33,   20,   34,   35,   36,   37,   20,   38,   20,
-       20,   20,   39,    1,   40,    1,    1,    1,    1,    1,
+       29,   30,   21,   31,   32,   21,   21,   33,   21,   34,
+       35,   36,   21,   37,   38,   39,   40,   21,   41,   21,
+       21,   21,   42,   43,   44,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -428,85 +431,107 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[41] =
+static const YY_CHAR yy_meta[45] =
     {   0,
-        1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    3,    1,    1,    1,    1,    3,
-        3,    3,    3,    3,    3,    3,    3,    3,    3,    3,
-        3,    3,    3,    3,    3,    3,    3,    3,    1,    1
+        1,    1,    2,    1,    1,    1,    1,    1,    1,    3,
+        1,    1,    1,    1,    1,    4,    1,    1,    1,    1,
+        4,    4,    4,    4,    1,    4,    4,    4,    4,    4,
+        4,    4,    4,    4,    4,    4,    4,    4,    4,    4,
+        4,    1,    1,    1
     } ;
 
-static const flex_int16_t yy_base[89] =
+static const flex_int16_t yy_base[115] =
     {   0,
-        0,    0,  100,  101,   97,  101,   80,   92,    0,  101,
-      101,  101,  101,  101,  101,   82,   28,  101,   77,   76,
-       75,    0,   60,   61,   58,   62,   62,   61,   60,   48,
-       56,  101,  101,   81,  101,   77,  101,    0,    0,   66,
-       29,  101,  101,  101,    0,   50,   44,   44,    0,   41,
-       45,   42,   40,   44,    0,   57,   39,   44,   31,    0,
-       24,   42,   36,   36,   31,    0,   41,   31,   29,   38,
-        0,   34,    0,   25,   20,    0,   21,    0,   31,   23,
-        0,    0,    0,  101,   46,   49,   48,   52
+        0,    0,   42,   43,  154,  155,  151,  155,  133,   42,
+        0,  144,  155,  155,  155,  155,  155,  155,  134,   39,
+       34,  155,  130,  129,  128,    0,  111,  112,  109,  113,
+      113,  112,  111,   99,  107,  155,   94,  155,    0,  155,
+       41,  134,  155,   50,  155,  132,    0,  155,   42,  155,
+        0,   43,   54,   63,  155,  155,  155,    0,  101,   95,
+       95,    0,   92,   96,   93,   91,   95,  155,    0,   54,
+       63,  155,   69,    0,   65,  110,  109,   89,   94,   81,
+        0,   38,   92,   86,   86,  100,   96,   72,    0,   82,
+       69,   57,   66,    0,   62,    0,   53,   48,    0,   48,
+
+        0,   58,   50,    0,    0,    0,  155,   94,   98,  102,
+       57,  106,  110,  114
     } ;
 
-static const flex_int16_t yy_def[89] =
+static const flex_int16_t yy_def[115] =
     {   0,
-       84,    1,   84,   84,   84,   84,   84,   85,   86,   84,
-       84,   84,   84,   84,   84,   84,   84,   84,   84,   84,
-       84,   87,   87,   87,   87,   87,   87,   87,   87,   87,
-       87,   84,   84,   84,   84,   85,   84,   86,   88,   84,
-       84,   84,   84,   84,   87,   87,   87,   87,   87,   87,
-       87,   87,   87,   87,   88,   84,   87,   87,   87,   87,
-       87,   87,   87,   87,   87,   87,   87,   87,   87,   87,
-       87,   87,   87,   87,   87,   87,   87,   87,   87,   87,
-       87,   87,   87,    0,   84,   84,   84,   84
+      107,    1,  108,  108,  107,  107,  107,  107,  107,  109,
+      110,  107,  107,  107,  107,  107,  107,  107,  107,  107,
+      107,  107,  107,  107,  107,  111,  111,  111,  111,  111,
+      111,  111,  111,  111,  111,  107,  107,  107,  112,  107,
+      113,  107,  107,  109,  107,  109,  110,  107,  107,  107,
+      114,  107,  107,  107,  107,  107,  107,  111,  111,  111,
+      111,  111,  111,  111,  111,  111,  111,  107,  112,  113,
+      113,  107,  107,  114,  107,  107,  107,  111,  111,  111,
+      111,  111,  111,  111,  111,  107,  107,  111,  111,  111,
+      111,  111,  111,  111,  111,  111,  111,  111,  111,  111,
+
+      111,  111,  111,  111,  111,  111,    0,  107,  107,  107,
+      107,  107,  107,  107
     } ;
 
-static const flex_int16_t yy_nxt[142] =
+static const flex_int16_t yy_nxt[200] =
     {   0,
-        4,    5,    6,    7,    8,    9,   10,   11,   12,   13,
-       14,   15,    4,   16,   17,   18,   19,   20,   21,   22,
-       22,   22,   22,   23,   22,   24,   25,   22,   26,   27,
-       22,   22,   28,   29,   22,   30,   22,   31,   32,   33,
-       40,   40,   41,   41,   68,   69,   36,   36,   36,   38,
-       45,   38,   55,   83,   55,   82,   81,   80,   79,   78,
-       77,   76,   75,   74,   73,   72,   71,   70,   67,   66,
-       65,   56,   64,   63,   62,   61,   60,   59,   58,   57,
-       56,   37,   34,   54,   53,   52,   51,   50,   49,   48,
-       47,   46,   44,   43,   42,   39,   37,   35,   34,   84,
+        6,    7,    8,    9,   10,   11,   12,   13,   14,   15,
+       16,   17,   18,   19,   20,   21,   22,   23,   24,   25,
+       26,   26,   26,   26,    6,   26,   27,   26,   28,   29,
+       26,   30,   31,   26,   26,   32,   33,   26,   34,   26,
+       35,   36,   37,   38,   40,   40,   45,   52,   50,   53,
+       71,   41,   41,   51,   45,   72,   54,   49,   75,   91,
+       58,   92,   54,  107,   73,   73,   46,   52,  107,   53,
+       73,   73,   71,   76,   46,   76,   54,  107,   77,   86,
+       75,   86,   54,  106,   87,  105,  104,   73,  103,  102,
+      101,  100,   99,   73,   39,   39,   39,   39,   44,   44,
 
-        3,   84,   84,   84,   84,   84,   84,   84,   84,   84,
-       84,   84,   84,   84,   84,   84,   84,   84,   84,   84,
-       84,   84,   84,   84,   84,   84,   84,   84,   84,   84,
-       84,   84,   84,   84,   84,   84,   84,   84,   84,   84,
-       84
+       44,   44,   47,   98,   47,   47,   69,   97,   96,   69,
+       70,   87,   70,   70,   74,   87,   74,   74,   95,   94,
+       93,   90,   89,   88,   77,   77,   85,   84,   83,   82,
+       81,   80,   79,   78,  107,   42,   68,   67,   66,   65,
+       64,   63,   62,   61,   60,   59,   57,   56,   55,   49,
+       48,   43,   42,  107,    5,  107,  107,  107,  107,  107,
+      107,  107,  107,  107,  107,  107,  107,  107,  107,  107,
+      107,  107,  107,  107,  107,  107,  107,  107,  107,  107,
+      107,  107,  107,  107,  107,  107,  107,  107,  107,  107,
+      107,  107,  107,  107,  107,  107,  107,  107,  107
+
     } ;
 
-static const flex_int16_t yy_chk[142] =
+static const flex_int16_t yy_chk[200] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-       17,   41,   17,   41,   61,   61,   85,   85,   85,   86,
-       87,   86,   88,   80,   88,   79,   77,   75,   74,   72,
-       70,   69,   68,   67,   65,   64,   63,   62,   59,   58,
-       57,   56,   54,   53,   52,   51,   50,   48,   47,   46,
-       40,   36,   34,   31,   30,   29,   28,   27,   26,   25,
-       24,   23,   21,   20,   19,   16,    8,    7,    5,    3,
+        1,    1,    1,    1,    3,    4,   10,   21,   20,   21,
+       41,    3,    4,   20,   44,   41,   21,   49,   52,   82,
+      111,   82,   21,   70,   49,   52,   10,   53,   70,   53,
+       49,   52,   71,   54,   44,   54,   53,   71,   54,   73,
+       75,   73,   53,  103,   73,  102,  100,   75,   98,   97,
+       95,   93,   92,   75,  108,  108,  108,  108,  109,  109,
 
-       84,   84,   84,   84,   84,   84,   84,   84,   84,   84,
-       84,   84,   84,   84,   84,   84,   84,   84,   84,   84,
-       84,   84,   84,   84,   84,   84,   84,   84,   84,   84,
-       84,   84,   84,   84,   84,   84,   84,   84,   84,   84,
-       84
+      109,  109,  110,   91,  110,  110,  112,   90,   88,  112,
+      113,   87,  113,  113,  114,   86,  114,  114,   85,   84,
+       83,   80,   79,   78,   77,   76,   67,   66,   65,   64,
+       63,   61,   60,   59,   46,   42,   37,   35,   34,   33,
+       32,   31,   30,   29,   28,   27,   25,   24,   23,   19,
+       12,    9,    7,    5,  107,  107,  107,  107,  107,  107,
+      107,  107,  107,  107,  107,  107,  107,  107,  107,  107,
+      107,  107,  107,  107,  107,  107,  107,  107,  107,  107,
+      107,  107,  107,  107,  107,  107,  107,  107,  107,  107,
+      107,  107,  107,  107,  107,  107,  107,  107,  107
+
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static const flex_int32_t yy_rule_can_match_eol[38] =
+static const flex_int32_t yy_rule_can_match_eol[47] =
     {   0,
-0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,     };
+0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -544,17 +569,41 @@ static void tok_keyword(const char* kw, int token) {
   wasm_record_token(TOK_MOTCLE, kw, yylineno, yycol);
   bump_col(yytext);
   yylval.chaine = strdup(yytext);
-  /* yylval used only when parser needs it */
 }
 
 static void tok_simple(WasmTokenType t) {
   wasm_record_token(t, yytext, yylineno, yycol);
   bump_col(yytext);
 }
-#line 554 "D:/MP_compilation/src/specs/lex.yy.c"
-#line 555 "D:/MP_compilation/src/specs/lex.yy.c"
+
+static char* unescape_string(const char* s) {
+  size_t n = strlen(s);
+  char* out = (char*)malloc(n + 1);
+  size_t j = 0;
+  for (size_t i = 0; i < n; i++) {
+    if (s[i] == '\\' && i + 1 < n) {
+      i++;
+      switch (s[i]) {
+        case 'n': out[j++] = '\n'; break;
+        case 'r': out[j++] = '\r'; break;
+        case 't': out[j++] = '\t'; break;
+        case '"': out[j++] = '"'; break;
+        case '\\': out[j++] = '\\'; break;
+        default: out[j++] = s[i]; break;
+      }
+    } else {
+      out[j++] = s[i];
+    }
+  }
+  out[j] = '\0';
+  return out;
+}
+#line 601 "D:/MP_compilation/src/specs/lex.yy.c"
+
+#line 603 "D:/MP_compilation/src/specs/lex.yy.c"
 
 #define INITIAL 0
+#define COMMENT 1
 
 #ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
@@ -769,10 +818,10 @@ YY_DECL
 		}
 
 	{
-#line 34 "D:/MP_compilation/src/specs/botscript.l"
+#line 64 "D:/MP_compilation/src/specs/botscript.l"
 
 
-#line 775 "D:/MP_compilation/src/specs/lex.yy.c"
+#line 824 "D:/MP_compilation/src/specs/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -799,13 +848,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 85 )
+				if ( yy_current_state >= 108 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 101 );
+		while ( yy_base[yy_current_state] != 155 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -841,78 +890,104 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 36 "D:/MP_compilation/src/specs/botscript.l"
+#line 66 "D:/MP_compilation/src/specs/botscript.l"
 { bump_col(yytext); }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 37 "D:/MP_compilation/src/specs/botscript.l"
-{ yylineno++; yycol = 1; }
+#line 67 "D:/MP_compilation/src/specs/botscript.l"
+{ yycol = 1; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 39 "D:/MP_compilation/src/specs/botscript.l"
+#line 69 "D:/MP_compilation/src/specs/botscript.l"
 { bump_col(yytext); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 40 "D:/MP_compilation/src/specs/botscript.l"
+#line 70 "D:/MP_compilation/src/specs/botscript.l"
 { bump_col(yytext); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 42 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_keyword("let", LET); return LET; }
+#line 73 "D:/MP_compilation/src/specs/botscript.l"
+{ bump_col(yytext); BEGIN(COMMENT); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 43 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_keyword("repeat", REPEAT); return REPEAT; }
+#line 74 "D:/MP_compilation/src/specs/botscript.l"
+{ bump_col(yytext); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 44 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_keyword("if", IF); return IF; }
+#line 75 "D:/MP_compilation/src/specs/botscript.l"
+{ bump_col(yytext); }
 	YY_BREAK
 case 8:
+/* rule 8 can match eol */
 YY_RULE_SETUP
-#line 45 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_keyword("else", ELSE); return ELSE; }
+#line 76 "D:/MP_compilation/src/specs/botscript.l"
+{ yycol = 1; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 46 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_keyword("while", WHILE); return WHILE; }
+#line 77 "D:/MP_compilation/src/specs/botscript.l"
+{ bump_col(yytext); BEGIN(INITIAL); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 47 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_keyword("forward", FORWARD); return FORWARD; }
+#line 79 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_keyword("let", LET); return LET; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 48 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_keyword("turn", TURN); return TURN; }
+#line 80 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_keyword("repeat", REPEAT); return REPEAT; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 49 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_keyword("color", COLOR); return COLOR; }
+#line 81 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_keyword("if", IF); return IF; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 50 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_keyword("penDown", PENDOWN); return PENDOWN; }
+#line 82 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_keyword("else", ELSE); return ELSE; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 51 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_keyword("penUp", PENUP); return PENUP; }
+#line 83 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_keyword("while", WHILE); return WHILE; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 53 "D:/MP_compilation/src/specs/botscript.l"
+#line 84 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_keyword("forward", FORWARD); return FORWARD; }
+	YY_BREAK
+case 16:
+YY_RULE_SETUP
+#line 85 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_keyword("turn", TURN); return TURN; }
+	YY_BREAK
+case 17:
+YY_RULE_SETUP
+#line 86 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_keyword("color", COLOR); return COLOR; }
+	YY_BREAK
+case 18:
+YY_RULE_SETUP
+#line 87 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_keyword("penDown", PENDOWN); return PENDOWN; }
+	YY_BREAK
+case 19:
+YY_RULE_SETUP
+#line 88 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_keyword("penUp", PENUP); return PENUP; }
+	YY_BREAK
+case 20:
+YY_RULE_SETUP
+#line 91 "D:/MP_compilation/src/specs/botscript.l"
 {
                           yylval.reel = atof(yytext);
                           wasm_record_token(TOK_REEL, yytext, yylineno, yycol);
@@ -920,9 +995,19 @@ YY_RULE_SETUP
                           return REEL;
                         }
 	YY_BREAK
-case 16:
+case 21:
 YY_RULE_SETUP
-#line 60 "D:/MP_compilation/src/specs/botscript.l"
+#line 98 "D:/MP_compilation/src/specs/botscript.l"
+{
+                          yylval.reel = atof(yytext);
+                          wasm_record_token(TOK_REEL, yytext, yylineno, yycol);
+                          bump_col(yytext);
+                          return REEL;
+                        }
+	YY_BREAK
+case 22:
+YY_RULE_SETUP
+#line 105 "D:/MP_compilation/src/specs/botscript.l"
 {
                           yylval.entier = atoi(yytext);
                           wasm_record_token(TOK_ENTIER, yytext, yylineno, yycol);
@@ -930,9 +1015,9 @@ YY_RULE_SETUP
                           return ENTIER;
                         }
 	YY_BREAK
-case 17:
+case 23:
 YY_RULE_SETUP
-#line 67 "D:/MP_compilation/src/specs/botscript.l"
+#line 112 "D:/MP_compilation/src/specs/botscript.l"
 {
                           yylval.chaine = strdup(yytext);
                           wasm_record_token(TOK_IDENT, yytext, yylineno, yycol);
@@ -940,124 +1025,143 @@ YY_RULE_SETUP
                           return IDENT;
                         }
 	YY_BREAK
-case 18:
-/* rule 18 can match eol */
+case 24:
+/* rule 24 can match eol */
 YY_RULE_SETUP
-#line 74 "D:/MP_compilation/src/specs/botscript.l"
+#line 120 "D:/MP_compilation/src/specs/botscript.l"
 {
-                          char* s = strdup(yytext + 1);
-                          s[strlen(s)-1] = '\0';
-                          yylval.chaine = strdup(s);
-                          wasm_record_token(TOK_CHAINE, s, yylineno, yycol);
-                          free(s);
+                          size_t len = (size_t)yyleng;
+                          char* raw = (char*)malloc(len - 1);
+                          memcpy(raw, yytext + 1, len - 2);
+                          raw[len - 2] = '\0';
+                          char* un = unescape_string(raw);
+                          yylval.chaine = un;
+                          wasm_record_token(TOK_CHAINE, un, yylineno, yycol);
+                          free(raw);
                           bump_col(yytext);
                           return CHAINE;
                         }
 	YY_BREAK
-case 19:
-YY_RULE_SETUP
-#line 84 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_OP_REL); return EQ; }
-	YY_BREAK
-case 20:
-YY_RULE_SETUP
-#line 85 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_OP_REL); return NE; }
-	YY_BREAK
-case 21:
-YY_RULE_SETUP
-#line 86 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_OP_REL); return LE; }
-	YY_BREAK
-case 22:
-YY_RULE_SETUP
-#line 87 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_OP_REL); return GE; }
-	YY_BREAK
-case 23:
-YY_RULE_SETUP
-#line 89 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_OP_REL); return '<'; }
-	YY_BREAK
-case 24:
-YY_RULE_SETUP
-#line 90 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_OP_REL); return '>'; }
-	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 91 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_AFFECT); return '='; }
+#line 133 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_REL); return EQ; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 93 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_OP_ARTHM); return '+'; }
+#line 134 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_REL); return NE; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 94 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_OP_ARTHM); return '-'; }
+#line 135 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_REL); return LE; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 95 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_OP_ARTHM); return '*'; }
+#line 136 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_REL); return GE; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 96 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_OP_ARTHM); return '/'; }
+#line 138 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_REL); return AND; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 98 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_PUNCT); return '{'; }
+#line 139 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_REL); return OR; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 99 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_PUNCT); return '}'; }
+#line 140 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_REL); return NOT; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 100 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_PUNCT); return '('; }
+#line 142 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_REL); return '<'; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 101 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_PUNCT); return ')'; }
+#line 143 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_REL); return '>'; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 102 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_PUNCT); return ';'; }
+#line 144 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_AFFECT); return '='; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 103 "D:/MP_compilation/src/specs/botscript.l"
-{ tok_simple(TOK_PUNCT); return ','; }
+#line 146 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_ARTHM); return '+'; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 105 "D:/MP_compilation/src/specs/botscript.l"
+#line 147 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_ARTHM); return '-'; }
+	YY_BREAK
+case 37:
+YY_RULE_SETUP
+#line 148 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_ARTHM); return '*'; }
+	YY_BREAK
+case 38:
+YY_RULE_SETUP
+#line 149 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_OP_ARTHM); return '/'; }
+	YY_BREAK
+case 39:
+YY_RULE_SETUP
+#line 151 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_PUNCT); return '{'; }
+	YY_BREAK
+case 40:
+YY_RULE_SETUP
+#line 152 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_PUNCT); return '}'; }
+	YY_BREAK
+case 41:
+YY_RULE_SETUP
+#line 153 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_PUNCT); return '('; }
+	YY_BREAK
+case 42:
+YY_RULE_SETUP
+#line 154 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_PUNCT); return ')'; }
+	YY_BREAK
+case 43:
+YY_RULE_SETUP
+#line 155 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_PUNCT); return ';'; }
+	YY_BREAK
+case 44:
+YY_RULE_SETUP
+#line 156 "D:/MP_compilation/src/specs/botscript.l"
+{ tok_simple(TOK_PUNCT); return ','; }
+	YY_BREAK
+case 45:
+YY_RULE_SETUP
+#line 158 "D:/MP_compilation/src/specs/botscript.l"
 {
                           char msg[128];
                           snprintf(msg, sizeof(msg), "Caractère inattendu: '%s'", yytext);
                           wasm_record_error("LEXICAL", msg, yylineno, yycol);
                           wasm_record_token(TOK_ERROR, yytext, yylineno, yycol);
                           bump_col(yytext);
-                          return 0;
+                          return yytext[0];
                         }
 	YY_BREAK
-case 37:
+case 46:
 YY_RULE_SETUP
-#line 114 "D:/MP_compilation/src/specs/botscript.l"
+#line 167 "D:/MP_compilation/src/specs/botscript.l"
 ECHO;
 	YY_BREAK
-#line 1059 "D:/MP_compilation/src/specs/lex.yy.c"
+#line 1162 "D:/MP_compilation/src/specs/lex.yy.c"
 case YY_STATE_EOF(INITIAL):
+case YY_STATE_EOF(COMMENT):
 	yyterminate();
 
 	case YY_END_OF_BUFFER:
@@ -1353,7 +1457,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 85 )
+			if ( yy_current_state >= 108 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1381,11 +1485,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 85 )
+		if ( yy_current_state >= 108 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 84);
+	yy_is_jam = (yy_current_state == 107);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -2073,5 +2177,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 114 "D:/MP_compilation/src/specs/botscript.l"
+#line 167 "D:/MP_compilation/src/specs/botscript.l"
 

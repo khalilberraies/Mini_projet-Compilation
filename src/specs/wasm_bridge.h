@@ -29,6 +29,7 @@ typedef enum {
   AST_WHILE,
   AST_COMMAND,
   AST_BINARY_EXPR,
+  AST_UNARY_EXPR,  
   AST_LITERAL,
   AST_IDENTIFIER
 } AstType;
@@ -38,7 +39,6 @@ typedef struct AstNode AstNode;
 struct AstNode {
   AstType type;
 
-  /* generic location */
   int line;
   int col;
 
@@ -53,7 +53,7 @@ struct AstNode {
     struct {
       AstNode* condition;
       AstNode** then_body; int then_len;
-      AstNode** else_body; int else_len; /* can be 0 */
+      AstNode** else_body; int else_len;
     } if_stmt;
 
     struct { AstNode* condition; AstNode** body; int body_len; } while_stmt;
@@ -62,11 +62,16 @@ struct AstNode {
 
     struct { AstNode* left; char* op; AstNode* right; } binary;
 
+    struct { char* op; AstNode* expr; } unary;   /* NEW */
+
     struct { char* literal_type; char* value; } literal;
 
     struct { char* name; } ident;
   } as;
 };
+
+/* add prototype */
+AstNode* ast_make_unary(const char* op, AstNode* expr);
 
 /* token/error hooks */
 void wasm_reset_buffers(void);
