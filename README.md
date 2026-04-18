@@ -1,89 +1,186 @@
-# BotScript IDE 🤖
+# BotScript IDE (User Manual)
 
-**BotScript IDE** est un environnement de développement intégré (IDE) complet, basé sur le web, pour un langage spécifique au domaine (DSL) personnalisé conçu pour contrôler un robot virtuel. Ce projet a été développé comme mini-projet pour le cours de **Techniques de Compilation** à l'**GLSI - ISI (2024-2025)**.
+BotScript IDE is a web-based IDE for **BotScript**, a small domain-specific language (DSL) designed to control a virtual drawing robot. The project demonstrates classic compiler concepts (lexing, parsing, AST construction) using **Flex/Bison compiled to WebAssembly**, and provides compiler visualizations (tokens + AST) directly in the UI.
 
-L'objectif du projet est de démontrer l'application pratique des principes de construction de compilateurs : Analyse Lexicale, Analyse Syntaxique et Interprétation Sémantique.
+## 1) Quick start (Windows / Linux)
 
----
+### Prerequisites
+- Node.js **18+**
+- npm (comes with Node)
 
-## 🚀 Démarrage Rapide
+### Run the IDE
+```bash
+npm install
+npm run dev
+```
+Then open `http://localhost:3000`.
 
-1. **Installez Node.js** (v18 ou supérieure).
-2. **Ouvrez un terminal** dans le dossier du projet.
-3. **Installez les dépendances** :
+> Note: The repository already includes a prebuilt WebAssembly compiler in `public/wasm/`, so you can run the IDE without installing Flex/Bison.
+
+## 2) How to use the IDE
+
+1. Open the **Editor** tab and write BotScript.
+2. Click **Run**.
+3. Check the **Compiler** tab to inspect:
+   - the token stream (what the lexer produced)
+   - the AST in JSON (what the parser built)
+4. The **Canvas** shows the robot path (execution trace).
+
+## 3) The BotScript DSL (detailed reference)
+
+### 3.1 Lexical rules
+
+**Comments** (ignored):
+- `// ...` single-line
+- `# ...` single-line
+- `/* ... */` multi-line
+
+**Literals**:
+- Numbers: integers and reals (e.g. `42`, `3.14`, `1e3`, `2.5E-2`)
+- Strings: double-quoted strings with escapes (e.g. `"#3b82f6"`, `"hello\nworld"`)
+
+**Identifiers**:
+- `[a-zA-Z_][a-zA-Z0-9_]*`
+
+**Keywords**:
+- Declarations / control flow: `let`, `repeat`, `if`, `else`, `while`
+- Robot commands: `forward`, `turn`, `color`, `penDown`, `penUp`
+
+### 3.2 Program structure
+
+A program is a sequence of statements. Statements end with `;` for declarations/assignments/commands. Blocks use `{ ... }`.
+
+Supported statements:
+- Variable declaration: `let name = expression;`
+- Assignment: `name = expression;`
+- Fixed loop: `repeat expression { statements }`
+- While loop: `while (expression) { statements }`
+- Conditional:
+  - `if (expression) { statements }`
+  - `if (expression) { statements } else { statements }`
+- Command call:
+  - `forward(expr);`, `turn(expr);`, `color(expr);`
+  - `penDown();`, `penUp();`
+
+### 3.3 Expressions and operators
+
+BotScript uses **expressions everywhere** (loop counts, conditions, command arguments).
+
+**Arithmetic**: `+`, `-`, `*`, `/`
+
+**Relational**: `<`, `>`, `<=`, `>=`, `==`, `!=`
+
+**Logical**:
+- `&&` (and)
+- `||` (or)
+- `!`  (not)
+
+**Precedence** (high → low):
+1. Unary `!`
+2. `*` `/`
+3. `+` `-`
+4. Relational: `<` `>` `<=` `>=` `==` `!=`
+5. `&&`
+6. `||`
+
+> Implementation note: conditions are evaluated numerically (`0` is false, non-zero is true).
+
+### 3.4 Built-in commands (robot API)
+
+| Command | Signature | Effect |
+|---|---|---|
+| `forward` | `forward(dist);` | Move forward by `dist` units; draws if pen is down. |
+| `turn` | `turn(angle);` | Rotate by `angle` degrees (clockwise). |
+| `color` | `color("#RRGGBB");` | Set pen color (string). |
+| `penDown` | `penDown();` | Start drawing. |
+| `penUp` | `penUp();` | Stop drawing. |
+
+## 4) Examples
+
+### Example A — square
+```c
+let size = 100;
+color("#3b82f6");
+penDown();
+
+repeat 4 {
+  forward(size);
+  turn(90);
+}
+```
+
+### Example B — spiral
+```c
+let step = 5;
+let i = 0;
+color("#10b981");
+penDown();
+
+while (i < 60) {
+  forward(step);
+  turn(20);
+  step = step + 2;
+  i = i + 1;
+}
+```
+
+### Example C — condition + logical operators
+```c
+let x = 0;
+penDown();
+
+while (x < 200) {
+  if ((x < 80) || (x > 160)) {
+    color("#ef4444");
+  } else {
+    color("#3b82f6");
+  }
+
+  forward(5);
+  turn(10);
+  x = x + 5;
+}
+```
+
+## 5) Rebuilding the Flex/Bison compiler (WASM)
+
+The WebAssembly compiler is generated from the specs in `src/specs/`:
+- `botscript.l` (Flex lexer)
+- `botscript.y` (Bison parser + AST actions)
+
+The build script is `scripts/build-wasm.sh` and outputs to `public/wasm/`.
+
+### Option 1 (recommended) — Linux / WSL (easiest for Flex/Bison)
+1. Install Flex + Bison (example for Debian/Ubuntu):
    ```bash
-   npm install
+   sudo apt update
+   sudo apt install -y flex bison
    ```
-4. **Lancez le serveur de développement** :
+2. Install and activate Emscripten SDK (emsdk) and ensure `emcc` is in your `PATH`.
+3. Build the compiler + start the IDE:
    ```bash
-   npm run dev
+   npm run dev:wasm
    ```
-5. Ouvrez votre navigateur à l'URL affichée dans le terminal (généralement `http://localhost:3000`).
 
----
+### Option 2 — Windows native (possible, but more tooling)
+You need:
+- A Bash environment to run `scripts/build-wasm.sh` (Git Bash works; WSL works)
+- Flex/Bison for Windows (commonly provided by **WinFlexBison**, exposing `win_flex` and `win_bison`)
+- Emscripten SDK (emsdk) with `emcc` available
 
-## 🛠️ Fonctionnement : Cohérence avec les TP (Flex & Bison)
+Then:
+```bash
+npm run dev:wasm
+```
 
-Ce projet a été restructuré pour être en parfaite cohérence avec les travaux pratiques **TP1 (Analyse Lexicale)** et **TP2 (Analyse Syntaxique)** :
+## 6) Project structure (high level)
 
-### 1. Analyse Lexicale (Inspirée de Flex)
-Le fichier `src/compiler.ts` implémente une fonction `yylex()` qui :
-- Utilise des expressions régulières pour identifier les unités lexicales (`ENTIER`, `REEL`, `IDENT`, `MOTCLE`).
-- Gère les variables globales standards : `yytext`, `yylval`, `yylineno`.
-- Ignore les commentaires (`//` ou `#`) et les espaces, comme demandé dans le TP1.
+- `src/App.tsx`: UI (editor, compiler panels, canvas)
+- `src/wasm/botscriptWasm.ts`: loads and calls the WASM compiler
+- `src/specs/`: Flex/Bison specs + runtime (`wasm_runtime.c`, `wasm_bridge.h`)
+- `public/wasm/`: generated `botscript.js` + `botscript.wasm`
 
-### 2. Analyse Syntaxique (Inspirée de Bison)
-La classe `Parser` implémente une méthode `yyparse()` qui :
-- Suit une grammaire formelle définie par des règles de production.
-- Gère les priorités des opérateurs (arithmétiques et relationnels).
-- Effectue des actions sémantiques pour construire l'Arbre de Syntaxe Abstraite (AST).
-- Supporte désormais les boucles `while (condition) { ... }` en plus des boucles `repeat`.
+## 7) Troubleshooting
 
-### 3. Fichiers de Spécifications et Fichiers Générés
-Pour votre rapport, les fichiers sources et les fichiers générés théoriques sont fournis dans le dossier `src/specs/` :
-- `botscript.l` : Spécifications Flex (définitions régulières et règles de traduction).
-- `botscript.y` : Spécifications Bison (grammaire, union yylval et actions).
-- `botscript.tab.h` & `botscript.tab.c` : Fichiers d'en-tête et de code générés par Bison.
-- `lex.yy.c` : Code C généré par Flex pour l'analyseur lexical.
-
----
-
-## 📝 Spécification du Langage
-
-### Commandes de Base
-| Commande | Description |
-| :--- | :--- |
-| `forward(dist);` | Déplace le robot vers l'avant de `dist` unités. |
-| `turn(angle);` | Fait pivoter le robot de `angle` degrés (sens horaire). |
-| `color("#hex");` | Définit la couleur du stylo (ex: `"#3b82f6"`). |
-| `penDown();` | Abaisse le stylo pour commencer à dessiner. |
-| `penUp();` | Lève le stylo pour arrêter de dessiner. |
-
-### Logique et Flux de Contrôle
-- **Variables** : `let size = 100;` ou `size = size + 10;`
-- **Arithmétique** : Supporte `+`, `-`, `*`, `/` avec la priorité standard.
-- **Boucles** : 
-  - `repeat 4 { ... }` : Exécute le bloc un nombre fixe de fois.
-  - `while (x < 100) { ... }` : Exécute le bloc tant que la condition est vraie.
-- **Conditionnels** : `if (x > 10) { ... } else { ... }` pour la prise de décision.
-
----
-
-## 🎨 Fonctionnalités de l'Interface Utilisateur
-
-- **Éditeur style Monaco** : Un éditeur de code propre, au thème sombre, avec coloration syntaxique.
-- **Onglet Compilateur (Visualisation Flex/Bison)** : Une vue exclusive permettant de voir :
-  - **Flux de Jetons (yylex)** : La liste brute des tokens identifiés avec leurs types et valeurs.
-  - **Structure AST (yyparse)** : L'arbre de syntaxe abstraite généré sous forme JSON pour comprendre la hiérarchie du code.
-- **Visualiseur Canvas 2D** : Une grille en temps réel où le chemin du robot est dessiné.
-- **Console Système** : Un outil de diagnostic qui affiche l'état de la compilation et les erreurs.
-- **Panneau de Documentation** : Un guide intégré pour aider les utilisateurs à apprendre la syntaxe BotScript.
-
----
-
-## 🎓 Contexte Éducatif
-Ce projet sert d'implémentation pratique de :
-- **Grammaires Formelles** : Définir la structure d'un langage.
-- **Récupération d'Erreurs** : Gestion et signalement des erreurs à différentes étapes de la compilation.
-- **Génération d'AST** : Transformer un texte plat en données structurées.
-- **Machines Virtuelles** : Simuler un état de type matériel (le robot) via un logiciel.
+- **Port 3000 already used**: change the port in `package.json` (script `dev`) or stop the process using it.
+- **`npm run dev:wasm` fails on Windows**: use WSL (Ubuntu) or ensure `win_flex`, `win_bison`, and `emcc` are on `PATH`.

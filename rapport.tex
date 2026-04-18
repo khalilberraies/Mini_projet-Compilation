@@ -1,0 +1,172 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+
+\geometry{margin=2.5cm}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  urlcolor=blue!50!black,
+  citecolor=blue!50!black
+}
+
+\lstdefinelanguage{BotScript}{
+  morekeywords={let,repeat,if,else,while,forward,turn,color,penDown,penUp},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[l]{\#},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{black!20},
+  keywordstyle=\bfseries\color{blue!60!black},
+  commentstyle=\itshape\color{black!60},
+  stringstyle=\color{teal!60!black},
+  showstringspaces=false
+}
+
+\title{\textbf{Mini-projet de Compilation : BotScript IDE}\\\large Rapport technique détaillé}
+\author{\textit{(à compléter : noms, classe, encadrant)}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Introduction et objectifs}
+Ce mini-projet a pour objectif de concevoir un petit langage spécifique au domaine (\emph{DSL}) nommé \textbf{BotScript}, destiné au contrôle d'un robot virtuel traçant une trajectoire dans un canevas 2D. Le projet met en pratique les notions fondamentales de compilation :
+\begin{itemize}
+  \item analyse lexicale (Flex) ;
+  \item analyse syntaxique (Bison) ;
+  \item construction d'un \emph{AST} (Arbre de Syntaxe Abstraite) ;
+  \item exécution sémantique (interprétation) et génération d'une trace d'exécution.
+\end{itemize}
+
+\section{Choix technologiques (outils et langages)}
+\subsection{C\,/\,Flex\,/\,Bison pour le compilateur}
+Le cœur du compilateur est réalisé en \textbf{C} avec :
+\begin{itemize}
+  \item \textbf{Flex} pour la génération de l'analyseur lexical à partir de \texttt{src/specs/botscript.l} ;
+  \item \textbf{Bison} pour la génération de l'analyseur syntaxique à partir de \texttt{src/specs/botscript.y}.
+\end{itemize}
+Ces choix permettent une correspondance directe avec les TPs de compilation (définition de tokens, règles de production, précédences, actions sémantiques).
+
+\subsection{WebAssembly et Emscripten}
+Pour exécuter le compilateur dans un navigateur, l'outil \textbf{Emscripten} (\texttt{emcc}) compile le code C (lexer, parser, runtime) en \textbf{WebAssembly}. Le résultat est un couple \texttt{public/wasm/botscript.js} + \texttt{public/wasm/botscript.wasm} chargé côté client.
+
+\subsection{Frontend : React + TypeScript + Vite}
+L'interface est une application \textbf{React} écrite en \textbf{TypeScript}, bundlée par \textbf{Vite}. Elle propose :
+\begin{itemize}
+  \item un éditeur de code ;
+  \item un panneau \emph{Compiler} (tokens, AST) ;
+  \item un canvas 2D affichant la trace du robot.
+\end{itemize}
+La communication avec le module WASM se fait via un wrapper TypeScript (\texttt{src/wasm/botscriptWasm.ts}) qui appelle la fonction exportée \texttt{compile\_json}.
+
+\section{Structure de la grammaire}
+\subsection{Lexique (tokens)}
+D'après \texttt{botscript.l} et \texttt{botscript.y}, les catégories de tokens principales sont :
+\begin{itemize}
+  \item littéraux : \texttt{ENTIER}, \texttt{REEL}, \texttt{CHAINE} ;
+  \item identifiants : \texttt{IDENT} ;
+  \item mots-clés : \texttt{LET}, \texttt{REPEAT}, \texttt{IF}, \texttt{ELSE}, \texttt{WHILE}, \texttt{FORWARD}, \texttt{TURN}, \texttt{COLOR}, \texttt{PENDOWN}, \texttt{PENUP} ;
+  \item opérateurs relationnels et logiques : \texttt{<,>,<=,>=,==,!=,\&\&,||,!}.
+\end{itemize}
+Le langage supporte des commentaires \texttt{//}, \texttt{\#} (ligne) et \texttt{/* ... */} (bloc).
+
+\subsection{Règles syntaxiques (vue d'ensemble)}
+La grammaire décrit un programme comme une suite de \emph{statements}. Les constructions majeures sont :
+\begin{itemize}
+  \item déclaration de variable : \texttt{let IDENT = expression ;}
+  \item affectation : \texttt{IDENT = expression ;}
+  \item boucle bornée : \texttt{repeat expression \{ ... \}}
+  \item boucle conditionnelle : \texttt{while (expression) \{ ... \}}
+  \item conditionnelle : \texttt{if (expression) \{ ... \} [ else \{ ... \} ]}
+  \item commandes du robot : \texttt{forward(...); turn(...); color(...); penDown(); penUp();}
+\end{itemize}
+
+\subsection{Précédences et associativités}
+Le fichier \texttt{botscript.y} définit des précédences classiques :
+\begin{itemize}
+  \item \textbf{OR} puis \textbf{AND} ;
+  \item \textbf{NOT} en unaire ;
+  \item opérateurs arithmétiques \texttt{+ -} puis \texttt{* /} ;
+  \item opérateurs relationnels non associatifs (\texttt{< > == != <= >=}).
+\end{itemize}
+
+\section{Structure de l'AST}
+\subsection{Types de n\oe{}uds}
+L'AST est défini dans \texttt{src/specs/wasm\_bridge.h} via une structure \texttt{AstNode} et un enum \texttt{AstType}. Les types principaux sont :
+\begin{itemize}
+  \item \texttt{Program} : liste de statements ;
+  \item \texttt{VarDecl} et \texttt{Assignment} ;
+  \item \texttt{Repeat}, \texttt{While}, \texttt{If} ;
+  \item \texttt{Command} (appel de primitive robot) ;
+  \item \texttt{BinaryExpr} et \texttt{UnaryExpr} (ex. \texttt{!expr}) ;
+  \item \texttt{Literal} (nombre ou chaîne) ;
+  \item \texttt{Identifier}.
+\end{itemize}
+
+\subsection{Construction de l'AST (actions sémantiques)}
+Les règles Bison associent à chaque production une action C construisant un n\oe{}ud via des fonctions \texttt{ast\_make\_*}. Exemple (déclaration) :
+\begin{lstlisting}[language=C,caption={Action Bison typique pour une déclaration}]
+var_decl:
+  LET IDENT '=' expression ';'
+  { $$ = ast_make_var_decl($2, $4); free($2); }
+  ;
+\end{lstlisting}
+
+\subsection{Sérialisation JSON (pour l'UI)}
+Le runtime \texttt{src/specs/wasm\_runtime.c} sérialise l'AST en JSON (fonction \texttt{ast\_to\_json}) afin que l'interface puisse afficher la structure. Cela évite de réimplémenter une visualisation d'AST côté navigateur.
+
+\section{Exécution sémantique et trace}
+Pour la simulation du robot, le runtime effectue une exécution simple par parcours d'AST et construit une \textbf{trace} : une liste de points \texttt{\{x,y,angle,penDown,color\}}. Cette trace est renvoyée en JSON dans \texttt{compile\_json} et utilisée pour dessiner le chemin sur le canvas.
+
+\paragraph{Sémantique des commandes}
+\begin{itemize}
+  \item \texttt{forward(d)} : avance de \texttt{d} selon l'angle courant ; ajoute un point à la trace.
+  \item \texttt{turn(a)} : incrémente l'angle.
+  \item \texttt{color("#RRGGBB")} : change la couleur.
+  \item \texttt{penDown()/penUp()} : active ou désactive le tracé.
+\end{itemize}
+
+\section{Défis rencontrés et solutions apportées}
+\begin{enumerate}[label=\textbf{D\arabic*.}]
+  \item \textbf{Portabilité Windows / Linux (Flex/Bison).}\\
+  \emph{Problème :} Flex et Bison sont natifs sous Linux et plus simples à installer (\texttt{apt}). Sous Windows, la chaîne d'outils varie (WSL, Git Bash, WinFlexBison).\\
+  \emph{Solution :} fournir un script unique \texttt{scripts/build-wasm.sh} qui détecte \texttt{bison} ou \texttt{win\_bison} et \texttt{flex} ou \texttt{win\_flex}, et recommander WSL pour une installation rapide.
+
+  \item \textbf{Intégration Flex/Bison dans le navigateur.}\\
+  \emph{Problème :} un parser C ne s'exécute pas directement côté client.\\
+  \emph{Solution :} compilation via Emscripten (WASM), export de \texttt{compile\_json} et des fonctions mémoire \texttt{malloc/free}.
+
+  \item \textbf{Visualisation pédagogique (tokens + AST).}\\
+  \emph{Problème :} exposer des informations internes (lexèmes, positions, erreurs) de manière lisible.\\
+  \emph{Solution :} enregistrement côté C des tokens/erreurs pendant l'analyse (\texttt{wasm\_record\_token}, \texttt{wasm\_record\_error}) et sérialisation JSON unique.
+
+  \item \textbf{Gestion des boucles infinies.}\\
+  \emph{Problème :} un \texttt{while} peut boucler indéfiniment.\\
+  \emph{Solution :} ajout d'un garde-fou côté runtime (limite d'itérations) pour préserver l'UI.
+
+  \item \textbf{Chaînes et échappements.}\\
+  \emph{Problème :} gérer correctement les séquences d'échappement (\texttt{\textbackslash n}, \texttt{\textbackslash t}, etc.) et la sérialisation JSON.\\
+  \emph{Solution :} fonction d'\emph{unescape} dans le lexer et fonction \texttt{sb\_json\_str} pour échapper proprement les chaînes.
+\end{enumerate}
+
+\section{Conclusion}
+Le projet aboutit à un mini-compilateur complet et \emph{pédagogique} : il illustre la chaîne lexing\,$\to$\,parsing\,$\to$\,AST\,$\to$\,exécution, tout en offrant une interface web permettant de visualiser les étapes et de tester des programmes BotScript de manière interactive.
+
+\end{document}
