@@ -1,0 +1,42 @@
+=== Analyse lexicale ===
+=======================
+
+CHAINE      : " fichier exemple "
+MOTCLE      : if
+IDENT       : a
+OP-REL      : >
+IDENT       : b
+IDENT       : a
+AFFECT      : =
+IDENT       : a
+OP-ARTHM    : +
+ENTIER      : 2
+CHAINE      : "cha√Æne deux "
+COMMENT     : # commentaire
+REEL        : 3.5
+REEL        : 5.3E2
+OP-ARTHM    : +
+REEL        : 4.2
+OP-ARTHM    : -
+REEL        : .2e2
+REEL        : 2.1
+IDENT       : et
+IDENT       : truc1
+IDENT       : x1
+ENTIER      : 1
+IDENT       : x
+** Erreur ligne 3: caract√®re non reconnu - "
+IDENT       : cha
+** Erreur ligne 3: caract√®re non reconnu - √
+** Erreur ligne 3: caract√®re non reconnu - Æ
+IDENT       : ne
+IDENT       : incompl
+** Erreur ligne 3: caract√®re non reconnu - √
+** Erreur ligne 3: caract√®re non reconnu - ®
+IDENT       : te
+OP-ARTHM    : -
+IDENT       : t
+COMMENT     : #fin
+
+=======================
+Total des erreurs: 5

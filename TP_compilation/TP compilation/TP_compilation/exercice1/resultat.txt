@@ -1,0 +1,2 @@
+C'est un nombre binaire: 1010
+C'est un nombre binaire: 1

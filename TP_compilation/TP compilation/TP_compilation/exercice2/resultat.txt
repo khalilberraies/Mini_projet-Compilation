@@ -1,0 +1,4 @@
+Nombre de lignes: 2
+Nombre de mots: 3
+Nombre de caractères: 25
+Somme des nombres: 579
